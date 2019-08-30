@@ -6,37 +6,53 @@
 #include <getopt.h>
 
 void imprimirDatos(FILE *archivo);
-void imprimirFechaHora(char* tipo);
 void buscarDato(char *dato, FILE* archivo);
 void printDatosCPU(void);
 void printDatosKernel(void);
-void print_time (char* label, long time);
+void printFormato(char* label, long time);
+void printFechaHora(char* tipo);
+void printTiempoActivo(void);
+void printNombreMaquina(void);
+void printFileSystem(void);
 
 int main(int argc, char* argv[]) {
-
-
-
-
-    FILE* fp;
-    double uptime, idle_time;
-/* Read the system uptime and accumulated idle time from /proc/uptime.*/
-fp = fopen ("/proc/uptime", "r");
-fscanf (fp, "%lf %lf\n", &uptime, &idle_time);
-fclose (fp);
-/* Summarize it. */
-    print_time ("uptime", (long) uptime);
-    print_time ("idle time", (long) idle_time);
-
-
-
+    printNombreMaquina();
+    printFechaHora("fecha");
+    printFechaHora("hora");
+    printDatosCPU();
+    printDatosKernel();
+    printTiempoActivo();
+    printFileSystem();
+    
     return 0;
+}
+void printFileSystem(void){
+    FILE *filesystem;
+    filesystem = fopen ( "/proc/filesystems", "r" );
+    if (filesystem==NULL) {
+        fputs ("File error",stderr);
+        exit (1);
+    }
+    printf("%s","Cantidad de file system soportados por el kernel:\n");
+    imprimirDatos(filesystem);
+    fclose(filesystem);
+}
+void printNombreMaquina(void){
+    FILE *archivoNombre;
+    archivoNombre = fopen ( "/proc/sys/kernel/hostname", "r" );
+    if (archivoNombre==NULL) {
+        fputs ("File error",stderr);
+        exit (1);
+    }
+    printf("%s","Nombre de la máquina es: ");
+    imprimirDatos(archivoNombre);
+    fclose(archivoNombre);
 }
 void printDatosKernel(void){
     FILE *archivoKernel;
     archivoKernel = fopen("/proc/sys/kernel/osrelease","r");
     printf("%s", "Version del Kernel: ");
     imprimirDatos(archivoKernel);
-    printf("\n");
     if (archivoKernel==NULL) {
         fputs ("File error",stderr);
         exit (1);
@@ -58,12 +74,19 @@ void printDatosCPU(void){
     fclose(archivoCPU);
     return;
 }
+/*
 void imprimirDatos(FILE *archivo){
     char buffer[100];
 
     fscanf(archivo, "%s" ,buffer);
     printf("%s \n", buffer);
 
+}*/
+void imprimirDatos(FILE *archivo){
+    char caracter;
+    while((caracter = fgetc(archivo)) != EOF){
+        printf("%c",caracter);
+    }
 }
 
 void buscarDato(char *dato, FILE* archivo){//dato: es el string a buscar
@@ -79,11 +102,43 @@ void buscarDato(char *dato, FILE* archivo){//dato: es el string a buscar
     }
     printf("%s", "No se encontró el dato especificado");
 }
-void print_time (char* label, long time){
-    /* Conversion constants. */
+void printFormato(char* label, long time){
+    //Conversion de variables
     const long minute = 60;
     const long hour = minute * 60;
     const long day = hour * 24;
-    /* Produce output. */
-    printf ("%s: %ld days, %ld:%02ld:%02ld\n", label, time / day,(time % day) / hour, (time % hour) / minute, time % minute);
+    
+    printf ("%s: %ld dias, %ld:%02ld:%02ld\n", label, time / day,(time % day) / hour, (time % hour) / minute, time % minute);
+}
+
+void printTiempoActivo(void){
+    FILE* fp;
+    double uptime, idleTime;
+/* Read the system uptime and accumulated idle time from /proc/uptime.*/
+    fp = fopen ("/proc/uptime", "r");
+    fscanf (fp, "%lf %lf\n", &uptime, &idleTime);
+    fclose (fp);
+
+    printFormato("Tiempo de actividad", (long) uptime);
+    printFormato("Tiempo de inactividad", (long) idleTime);
+}
+
+void printFechaHora(char* tipo){
+    time_t t;
+    struct tm *tm;
+    char fechayhora[100];
+
+    t=time(NULL);
+    tm=localtime(&t);
+    if(strcmp(tipo,"fecha")==0) {
+        strftime(fechayhora, 100, "%d/%m/%Y", tm);
+        printf("%s", "La fecha es: ");
+        printf("%s \n", fechayhora);
+    }else if(strcmp(tipo, "hora")==0){
+        strftime(fechayhora, 100, "%H:%M:%S", tm);
+        printf("%s", "La hora es: ");
+        printf("%s \n", fechayhora);
+    }else{
+        printf("%s \n", "ERROR");
+    }
 }

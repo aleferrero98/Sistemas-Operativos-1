@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/rdproc.dir/main.c.o  -o rdproc 

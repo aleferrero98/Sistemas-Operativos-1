@@ -1,3 +1,0 @@
-/home/alejandro/CLionProjects/rdproc/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/alejandro/CLionProjects/rdproc/cmake-build-debug/CMakeFiles/rdproc.dir
-/home/alejandro/CLionProjects/rdproc/cmake-build-debug/CMakeFiles/edit_cache.dir
