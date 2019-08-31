@@ -14,6 +14,9 @@ void printFechaHora(char* tipo);
 void printTiempoActivo(void);
 void printNombreMaquina(void);
 void printFileSystem(void);
+void cambiosContexto(void);
+void cantidadProcesos(void);
+void buscarDatoSinTitulo(char *dato, FILE* archivo);
 
 int main(int argc, char* argv[]) {
     printNombreMaquina();
@@ -23,6 +26,8 @@ int main(int argc, char* argv[]) {
     printDatosKernel();
     printTiempoActivo();
     printFileSystem();
+    cambiosContexto();
+    cantidadProcesos();
     
     return 0;
 }
@@ -141,4 +146,40 @@ void printFechaHora(char* tipo){
     }else{
         printf("%s \n", "ERROR");
     }
+}
+
+void cambiosContexto(void){
+    FILE *archivo;
+    archivo = fopen("/proc/stat","r");
+    printf("Cantidad de cambios de contexto:");
+    buscarDatoSinTitulo("ctxt",archivo);
+    fclose(archivo);
+
+    return;
+}
+
+void cantidadProcesos(void){
+    FILE *archivo;
+    archivo = fopen("/proc/stat","r");
+    printf("Cantidad de procesesos abiertos desde inicio del sistema:");
+    buscarDatoSinTitulo("processes",archivo);
+    fclose(archivo);
+
+    return;
+}
+
+void buscarDatoSinTitulo(char *dato, FILE* archivo){//dato: es el string a buscar
+    char buffer[100];
+    int aux;
+    while(!feof(archivo)){ //mientras no se llegue al final del archivo
+        fgets(buffer,100,archivo); //Lee una linea del archivo
+        aux=strncmp(dato, buffer, strlen(dato)); //compara los primeros n caracteres
+        if(aux==0){
+            char *c;
+            c=strstr(buffer, " ");
+            printf("%s", c);
+            return;
+        }
+    }
+    printf("%s", "No se encontró el dato especificado");
 }
