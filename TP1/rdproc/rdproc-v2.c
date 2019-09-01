@@ -6,30 +6,31 @@
 #include <getopt.h>
 
 void imprimirDatos(FILE *archivo);
-void buscarDato(char *dato, FILE* archivo);
+//void buscarDato(char *dato, FILE* archivo);
 void printDatosCPU(void);
-void printDatosKernel(void);
 void printFormato(char* label, long time);
 void printFechaHora(char* tipo);
 void printTiempoActivo(void);
-void printNombreMaquina(void);
-void printFileSystem(void);
-void cambiosContexto(void);
-void cantidadProcesos(void);
-void buscarDatoSinTitulo(char *dato, FILE* archivo);
+//void cambiosContexto(void);
+//void cantidadProcesos(void);
+void buscarDatoSinTitulo(char *dato, FILE* archivo, char caracterDeCorte);
 void tiempoCPU(void);
+void leerArchivo(char *ruta, char *presentacion);
+void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar);
 
 int main(int argc, char* argv[]) {
     int nextOption;
     const char* const shortOptions = "s";
 
-    printNombreMaquina();
+    leerArchivo("/proc/sys/kernel/hostname", "Nombre de la máquina es: ");
     printFechaHora("fecha");
     printFechaHora("hora");
     printDatosCPU();
-    printDatosKernel();
+
+    leerArchivo("/proc/sys/kernel/osrelease", "Version del Kernel: ");
     printTiempoActivo();
-    printFileSystem();
+
+    leerArchivo("/proc/filesystems", "Cantidad de file system soportados por el kernel:\n");
     
 
     do{
@@ -37,8 +38,10 @@ int main(int argc, char* argv[]) {
         switch(nextOption){
             case 's':
                 tiempoCPU();
-                cambiosContexto();
-                cantidadProcesos();
+               // cambiosContexto();
+                leerLineaArchivo("/proc/stat","Cantidad de cambios de contexto:","ctxt");
+                //cantidadProcesos();
+                leerLineaArchivo("/proc/stat","Cantidad de procesos abiertos desde inicio del sistema:", "processes");
                 break;
             case -1:    //si no hay caracteres de opcion o si se llega al final de la lista de opciones, getOpt devuelve -1
                 break;
@@ -54,39 +57,16 @@ void tiempoCPU(void){
     //IMPLEMENTAR
     return;
 }
-void printFileSystem(void){
-    FILE *filesystem;
-    filesystem = fopen ( "/proc/filesystems", "r" );
-    if (filesystem==NULL) {
+void leerArchivo(char *ruta, char *presentacion){
+    FILE *fp;
+    fp = fopen (ruta,"r");
+    if (fp==NULL) {
         fputs ("File error",stderr);
         exit (1);
     }
-    printf("%s","Cantidad de file system soportados por el kernel:\n");
-    imprimirDatos(filesystem);
-    fclose(filesystem);
-}
-void printNombreMaquina(void){
-    FILE *archivoNombre;
-    archivoNombre = fopen ( "/proc/sys/kernel/hostname", "r" );
-    if (archivoNombre==NULL) {
-        fputs ("File error",stderr);
-        exit (1);
-    }
-    printf("%s","Nombre de la máquina es: ");
-    imprimirDatos(archivoNombre);
-    fclose(archivoNombre);
-}
-void printDatosKernel(void){
-    FILE *archivoKernel;
-    archivoKernel = fopen("/proc/sys/kernel/osrelease","r");
-    printf("%s", "Version del Kernel: ");
-    imprimirDatos(archivoKernel);
-    if (archivoKernel==NULL) {
-        fputs ("File error",stderr);
-        exit (1);
-    }
-
-    fclose(archivoKernel);
+    printf("%s",presentacion);
+    imprimirDatos(fp);
+    fclose(fp);
 }
 void printDatosCPU(void){
     FILE *archivoCPU;
@@ -96,8 +76,10 @@ void printDatosCPU(void){
         exit (1);
     }
     printf("%s", "Información referida a la CPU:\n");
-    buscarDato("vendor_id", archivoCPU);
-    buscarDato("model name", archivoCPU);
+    printf("%s", "Tipo de CPU");
+    buscarDatoSinTitulo("vendor_id", archivoCPU, ':');
+    printf("%s", "Modelo de CPU");
+    buscarDatoSinTitulo("model name", archivoCPU, ':');
 
     fclose(archivoCPU);
     return;
@@ -116,7 +98,7 @@ void imprimirDatos(FILE *archivo){
         printf("%c",caracter);
     }
 }
-
+/*
 void buscarDato(char *dato, FILE* archivo){//dato: es el string a buscar
     char buffer[100];
     int aux;
@@ -129,7 +111,7 @@ void buscarDato(char *dato, FILE* archivo){//dato: es el string a buscar
         }
     }
     printf("%s", "No se encontró el dato especificado");
-}
+}*/
 void printFormato(char* label, long time){
     //Conversion de variables
     const long minute = 60;
@@ -171,6 +153,16 @@ void printFechaHora(char* tipo){
     }
 }
 
+void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar){
+    FILE *archivo;
+    archivo = fopen(ruta,"r");
+    printf("%s", presentacion);
+    buscarDatoSinTitulo(datoAbuscar,archivo, ' ');
+    fclose(archivo);
+
+    return;
+}
+/*
 void cambiosContexto(void){
     FILE *archivo;
     archivo = fopen("/proc/stat","r");
@@ -189,9 +181,9 @@ void cantidadProcesos(void){
     fclose(archivo);
 
     return;
-}
+}*/
 
-void buscarDatoSinTitulo(char *dato, FILE* archivo){//dato: es el string a buscar
+void buscarDatoSinTitulo(char *dato, FILE* archivo, char caracterDeCorte){//dato: es el string a buscar
     char buffer[100];
     int aux;
     while(!feof(archivo)){ //mientras no se llegue al final del archivo
@@ -199,10 +191,13 @@ void buscarDatoSinTitulo(char *dato, FILE* archivo){//dato: es el string a busca
         aux=strncmp(dato, buffer, strlen(dato)); //compara los primeros n caracteres
         if(aux==0){
             char *c;
-            c=strstr(buffer, " ");
+            //c=strstr(buffer, " ");
+            //c=strchr(buffer, ' ');
+            c=strchr(buffer, caracterDeCorte);
             printf("%s", c);
             return;
         }
     }
     printf("%s", "No se encontró el dato especificado");
 }
+
