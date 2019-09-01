@@ -9,7 +9,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e49d5bf-cd4d-4a1c-a0f8-7c8e211a080b" name="Default Changelist" comment="" />
+    <list default="true" id="1e49d5bf-cd4d-4a1c-a0f8-7c8e211a080b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdproc-v1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdproc-v1.c" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rdproc-v1.o" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +59,7 @@
       <workItem from="1566567063791" duration="1798000" />
       <workItem from="1567116916107" duration="724000" />
       <workItem from="1567121258581" duration="916000" />
+      <workItem from="1567294688190" duration="120000" />
     </task>
     <servers />
   </component>

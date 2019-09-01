@@ -17,8 +17,12 @@ void printFileSystem(void);
 void cambiosContexto(void);
 void cantidadProcesos(void);
 void buscarDatoSinTitulo(char *dato, FILE* archivo);
+void tiempoCPU(void);
 
 int main(int argc, char* argv[]) {
+    int nextOption;
+    const char* const shortOptions = "s";
+
     printNombreMaquina();
     printFechaHora("fecha");
     printFechaHora("hora");
@@ -26,10 +30,29 @@ int main(int argc, char* argv[]) {
     printDatosKernel();
     printTiempoActivo();
     printFileSystem();
-    cambiosContexto();
-    cantidadProcesos();
+    
+
+    do{
+        nextOption=getopt(argc,argv,shortOptions);
+        switch(nextOption){
+            case 's':
+                tiempoCPU();
+                cambiosContexto();
+                cantidadProcesos();
+                break;
+            case -1:    //si no hay caracteres de opcion o si se llega al final de la lista de opciones, getOpt devuelve -1
+                break;
+            default:
+                abort();
+        }
+    }while(nextOption != -1);
     
     return 0;
+}
+
+void tiempoCPU(void){
+    //IMPLEMENTAR
+    return;
 }
 void printFileSystem(void){
     FILE *filesystem;
@@ -161,7 +184,7 @@ void cambiosContexto(void){
 void cantidadProcesos(void){
     FILE *archivo;
     archivo = fopen("/proc/stat","r");
-    printf("Cantidad de procesesos abiertos desde inicio del sistema:");
+    printf("Cantidad de procesos abiertos desde inicio del sistema:");
     buscarDatoSinTitulo("processes",archivo);
     fclose(archivo);
 
