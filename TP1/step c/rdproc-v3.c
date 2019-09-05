@@ -20,10 +20,16 @@ void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar);
 int peticionesDisco(void);
 void promedioCarga1min(void);
 void impresionPeriodica(char extras[3][10]);
+int checkArgumentos(char *argv[]);
 
 int main(int argc, char* argv[]) {
     int nextOption;
     const char* const shortOptions = "sl";
+
+    if(checkArgumentos(argv)){
+        printf("Error, argumentos no apropiados, solo puede usar un argumento por vez\n Los argumentos aceptados son -s, -l, -p, -f o -t\n");
+        return 0;
+    } 
 
     leerArchivo("/proc/sys/kernel/hostname", "Nombre de la máquina es: ");
     printFechaHora("fecha");
@@ -36,7 +42,7 @@ int main(int argc, char* argv[]) {
     leerArchivo("/proc/filesystems", "Cantidad de file system soportados por el kernel:\n");
 
     char extras[3][10] = {" "," "," "};
-    int exclucion = 0;    
+    int exclucion = 0;   
 
     do{
         nextOption=getopt(argc,argv,shortOptions);
@@ -65,6 +71,15 @@ int main(int argc, char* argv[]) {
         }
     }while(nextOption != -1);
 
+    return 0;
+}
+
+int checkArgumentos(char *argv[])
+{
+    if(argv[1] != NULL && argv[2] != NULL){
+    if((strcmp(argv[1],"-l") == 0 || strcmp(argv[1],"-s") == 0) && (strcmp(argv[2],"-l") == 0 || strcmp(argv[2],"-s") == 0)) return 1;
+    else return 0;
+    }
     return 0;
 }
 
