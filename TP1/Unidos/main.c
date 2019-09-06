@@ -11,10 +11,10 @@ int main(int argc, char* argv[]) {
     int nextOption;
     const char* const shortOptions = "slt:p:f:";//: indica que necesita si o si parametros, :: los parametros son opcionales
 
-   /* if(checkArgumentos(argv)){
-        printf("Error, argumentos no apropiados, solo puede usar un argumento por vez\n Los argumentos aceptados son -s, -l, -p, -f o -t\n");
-        return 0;
-    }*/
+    if(checkArgumentos(argc,argv)){
+        fprintf(stderr,"Error, argumentos no apropiados, solo puede usar un argumento por vez\n Los argumentos aceptados son -s, -l, -p, -f o -t\n");
+        return 1;
+    }
 
     leerArchivo("/proc/sys/kernel/hostname", "Nombre de la máquina es: ");
     printFechaHora("fecha");

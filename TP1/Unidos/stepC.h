@@ -9,15 +9,27 @@
 int peticionesDisco(void);
 void promedioCarga1min(void);
 void impresionPeriodica(char extras[3][10]);
-int checkArgumentos(char *argv[]);
+int checkArgumentos(int argc,char *argv[]);
 
-int checkArgumentos(char *argv[])
+int checkArgumentos(int argc,char *argv[])
 {
+	int l = 0, s = 0, p = 0, t = 0, f = 0;
+	for(int i = 0; i < argc; i++){
+		if(strcmp(argv[i],"-s")==0) s++;
+		if(strcmp(argv[i],"-p")==0) p++;
+		if(strcmp(argv[i],"-t")==0) t++;
+		if(strcmp(argv[i],"-f")==0) f++;
+		if(strcmp(argv[i],"-l")==0) l++;
+	}
+	if ((l + s + p + t + f) > 1) return 1;
+	return 0;
+
+/*
     if(argv[1] != NULL && argv[2] != NULL){
     if((strcmp(argv[1],"-l") == 0 || strcmp(argv[1],"-s") == 0) && (strcmp(argv[2],"-l") == 0 || strcmp(argv[2],"-s") == 0)) return 1;
     else return 0;
     }
-    return 0;
+    return 0;*/
 }
 
 int peticionesDisco(){
