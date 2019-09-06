@@ -94,6 +94,8 @@ int main(int argc, char* argv[]) {
                 break;
             case '?':
                 fprintf (stderr, "La opción -%c requiere un argumento.\n", optopt);
+                abort();
+                break;
             default:
                 abort();//si no hubo parametros ni un -1 entonces hay un error
         }

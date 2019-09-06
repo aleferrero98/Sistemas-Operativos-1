@@ -7,7 +7,7 @@ void tiempoCPU(void);
 void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar);
 
 void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar){//lee una linea especifica de un archivo
-    char aux[100];
+    //char aux[100];
     printf("%s", presentacion);
     printf("%s", buscarDatoSinTitulo(datoAbuscar,ruta, ' '));//imprime la linea
 
