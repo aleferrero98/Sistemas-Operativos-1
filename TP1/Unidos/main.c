@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
                 strcat(buffer, "sudo cat /proc/");
                 strcat(buffer, optarg);//optarg es el argumento para esta opcion
                 strcat(buffer, "/stack");
-                printf("%s\n",buffer);
+                //printf("%s\n",buffer);
                 system(buffer); 
 
                 break;
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
                 strcat(buffer, optarg);//optarg es el argumento para esta opcion
                 //strcat(buffer, "/fd > fileDescriptors.txt");//guarda los datos en un txt para despues leer lo que necesita      
                 strcat(buffer, "/fd");*/
-                printf("%s\n",buffer);
+                //printf("%s\n",buffer);
                 system(buffer); 
                 break;
             case 'f':

@@ -11,22 +11,24 @@ void printDatosCPU(void);
 void leerArchivo(char *ruta, char *presentacion);
 void printFechaHora(char* tipo);
 void printTiempoActivo(void);
-char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte);
+void buscarDatoSinTitulo(char *contenedor, char *dato, char *path, char caracterDeCorte);
 void imprimirDatos(FILE *archivo);
 void printFormato(char* label, long time);
 
 void printDatosCPU(void){//imprime dos datos de /proc/cpuinfo
-    
+    char *contenedor[50]="";
     printf("%s", "Información referida a la CPU:\n");
     printf("%s", "Tipo de CPU");
-    printf("%s",buscarDatoSinTitulo("vendor_id", "/proc/cpuinfo", ':'));
+    buscarDatoSinTitulo(contenedor,"vendor_id", "/proc/cpuinfo", ':')
+    printf("%s", contenedor);
     printf("%s", "Modelo de CPU");
-    printf("%s", buscarDatoSinTitulo("model name", "/proc/cpuinfo", ':'));
+    buscarDatoSinTitulo(contenedor,"model name", "/proc/cpuinfo", ':')
+    printf("%s", contenedor);
 
     return;
 }
 
-char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte){//dato: es el string a buscar
+void buscarDatoSinTitulo(char *contenedor, char *dato, char *path, char caracterDeCorte){//dato: es el string a buscar
     FILE *fp;
     fp = fopen (path,"r");
     if (fp==NULL) {
@@ -42,12 +44,12 @@ char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte){//dato: 
         if(aux==0){
          	fclose(fp);
             punt=buffer;//puntero al primer elemento
-            return punt+strlen(dato);
+            strcpy(contenedor,punt+strlen(dato));
+            return;
         }
     }
     fprintf(stderr,"No se encontró el dato especificado");
     fclose(fp);
-    return '\0';
 
 }
 
