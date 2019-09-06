@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[]) {
     int nextOption;
-    const char* const shortOptions = "sl:t:p:f:";//: indica que necesita si o si parametros, :: los parametros son opcionales
+    const char* const shortOptions = "slt:p:f:";//: indica que necesita si o si parametros, :: los parametros son opcionales
 
    /* if(checkArgumentos(argv)){
         printf("Error, argumentos no apropiados, solo puede usar un argumento por vez\n Los argumentos aceptados son -s, -l, -p, -f o -t\n");
@@ -91,10 +91,6 @@ int main(int argc, char* argv[]) {
 
                 break;
             case -1:    //si no hay caracteres de opcion o si se llega al final de la lista de opciones, getOpt devuelve -1
-                break;
-            case ':':
-                fprintf (stderr, "La opción -%c requiere dos argumentos.\n", optopt);
-                abort();
                 break;
             case '?':
                 fprintf (stderr, "La opción -%c requiere un argumento.\n", optopt);

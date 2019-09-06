@@ -48,21 +48,20 @@ void promedioCarga1min(void){
 }
 
 void impresionPeriodica(char extras[3][10]){
-    printf("Peticiones a disco: %d\n",peticionesDisco());
+   /* printf("Peticiones a disco: %d\n",peticionesDisco());
     leerLineaArchivo("/proc/meminfo","Cantidad de memoria configurada en hardware:","MemTotal:");
     leerLineaArchivo("/proc/meminfo","Cantidad de memoria disponible:", "MemAvailable:");            
-    promedioCarga1min();
+    promedioCarga1min();*/
 
-    if(strcmp(extras[0]," ") == 0 && strcmp(extras[1]," ") == 0)return;
-    else if((strcmp(extras[2]," ") != 0) || (strcmp(extras[0], " ") != 0 && strcmp(extras[1]," ") == 0)){
-        printf("Error, deben ingresarse 2 argumentos\n");
-        return;
+    if((strcmp(extras[0]," ") == 0 && strcmp(extras[1]," ") == 0) ||((strcmp(extras[2]," ") != 0) || (strcmp(extras[0], " ") != 0 && strcmp(extras[1]," ") == 0))){
+    	printf("Error, deben ingresarse 2 argumentos\n");
+    	return;
     }
     else{
         int limite = atoi(extras[1]);
         int intervalos = atoi(extras[0]);
         //printf("limite %d intervalos %d\n",limite,intervalos);
-        for(int i = intervalos; i < limite; i += intervalos){ //i = intervalos porque la primera iteracion ya ocurrio
+        for(int i = 0; i < limite; i += intervalos){ //i = intervalos porque la primera iteracion ya ocurrio
             sleep(intervalos);
             printf("\n");
             printf("Peticiones a disco: %d\n",peticionesDisco());
