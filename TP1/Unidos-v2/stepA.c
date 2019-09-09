@@ -44,7 +44,6 @@ char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte){//dato: 
     fprintf(stderr,"No se encontró el dato especificado");
     fclose(fp);
     return NULL;
-
 }
 
 void leerArchivo(char *ruta, char *presentacion){//lee el archivo completo
@@ -87,22 +86,25 @@ void printTiempoActivo(void){
     printFormato("Tiempo de inactividad", (long) idleTime);
 }
 
-void printFechaHora(char* tipo){//imprime la fecha u hora actual
+void printFecha(void){//imprime la fecha actual
     time_t t;
     struct tm *tm;
-    char fechayhora[100];
-
+    char fecha[100];
     t=time(NULL);
     tm=localtime(&t);
-    if(strcmp(tipo,"fecha")==0) {
-        strftime(fechayhora, 100, "%d/%m/%Y", tm);
-        printf("%s", "La fecha es: ");
-        printf("%s \n", fechayhora);
-    }else if(strcmp(tipo, "hora")==0){
-        strftime(fechayhora, 100, "%H:%M:%S", tm);
-        printf("%s", "La hora es: ");
-        printf("%s \n", fechayhora);
-    }else{
-        printf("%s \n", "ERROR");
-    }
+    strftime(fecha, 100, "%d/%m/%Y", tm);
+    printf("%s", "La fecha es: ");
+    printf("%s \n", fecha);
+    
+}
+
+void printHora(void){//imprime la hora actual
+    time_t t;
+    struct tm *tm;
+    char hora[100];
+    t=time(NULL);
+    tm=localtime(&t);
+    strftime(hora, 100, "%H:%M:%S", tm);
+    printf("%s", "La hora es: ");
+    printf("%s \n", hora);
 }

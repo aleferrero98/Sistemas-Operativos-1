@@ -8,7 +8,8 @@
 
 void printDatosCPU(void);
 void leerArchivo(char *ruta, char *presentacion);
-void printFechaHora(char* tipo);
+void printFecha(void);
+void printHora(void);
 void printTiempoActivo(void);
 char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte);
 
@@ -17,6 +18,8 @@ void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar);
 
 void impresionPeriodica(char extras[3][10]);
 int checkArgumentos(int argc,char *argv[]);
+
+void infoFileDescriptors(char *path);
 
 int main(int argc, char* argv[]) {
     int nextOption;
@@ -28,8 +31,8 @@ int main(int argc, char* argv[]) {
     }
 
     leerArchivo("/proc/sys/kernel/hostname", "Nombre de la máquina es: ");
-    printFechaHora("fecha");
-    printFechaHora("hora");
+    printFecha();
+    printHora();
     printDatosCPU();
     leerArchivo("/proc/sys/kernel/osrelease", "Version del Kernel: ");
     printTiempoActivo();
@@ -82,7 +85,13 @@ int main(int argc, char* argv[]) {
                 //strcat(buffer, "/fd > fileDescriptors.txt");//guarda los datos en un txt para despues leer lo que necesita      
                 strcat(buffer, "/fd");*/
                 //printf("%s\n",buffer);
-                system(buffer); 
+                strcat(buffer, " > fileDescriptors.txt");//guarda los datos en un txt para despues leer lo que necesita 
+                system(buffer); //se crea el archivo con toda la info
+                printf("%s","Datos relativos al file descriptor del proceso con id ");
+                printf("%s\n",optarg);
+               	infoFileDescriptors("fileDescriptors.txt");//imprime lo necesario
+               	system("rm -v fileDescriptors.txt"); //borra el txt creado
+               
                 break;
             case 'f':
                 strcpy(buffer,""); //limpio el contenido del buffer
