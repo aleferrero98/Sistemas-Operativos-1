@@ -11,7 +11,7 @@ void leerArchivo(char *ruta, char *presentacion);
 void printFecha(void);
 void printHora(void);
 void printTiempoActivo(void);
-char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte);
+void buscarDatoSinTitulo(char *dato, char *path, char *contenido);
 
 void tiempoCPU(void);
 void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar);
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    leerArchivo("/proc/sys/kernel/hostname", "Nombre de la máquina es: ");
+    leerArchivo("/proc/sys/kernel/hostname", "Nombre de la máquina: ");
     printFecha();
     printHora();
     printDatosCPU();
@@ -68,7 +68,6 @@ int main(int argc, char* argv[]) {
                 strcat(buffer, "sudo cat /proc/");
                 strcat(buffer, optarg);//optarg es el argumento para esta opcion
                 strcat(buffer, "/stack");
-                //printf("%s\n",buffer);
                 system(buffer); 
 
                 break;
@@ -90,7 +89,7 @@ int main(int argc, char* argv[]) {
                 printf("%s","Datos relativos al file descriptor del proceso con id ");
                 printf("%s\n",optarg);
                	infoFileDescriptors("fileDescriptors.txt");//imprime lo necesario
-               	system("rm -v fileDescriptors.txt"); //borra el txt creado
+               	system("rm fileDescriptors.txt"); //borra el txt creado
                
                 break;
             case 'f':
@@ -102,7 +101,9 @@ int main(int argc, char* argv[]) {
                 strcat(mensaje,optarg);
                 strcat(mensaje," son:");
                 printf("%s\n", mensaje);
-                strcpy(mensaje,buscarDatoSinTitulo("Max open files", buffer, ' '));//copio la linea leida
+                char aux[100];
+                buscarDatoSinTitulo("Max open files", buffer, aux);
+                strcpy(mensaje, aux);//copio la linea leida
                 long int soft, hard;
 
                 sscanf(mensaje, "%ld %ld", &soft, &hard);

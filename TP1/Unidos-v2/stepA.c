@@ -7,21 +7,24 @@
 #include <stdio.h>
 #include <time.h>
 
-char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte);
+void buscarDatoSinTitulo(char *dato, char *path, char *contenido);
 void imprimirDatos(FILE *archivo);
 void printFormato(char* label, long time);
 
 void printDatosCPU(void){//imprime dos datos de /proc/cpuinfo
+    char aux[100];
     printf("%s", "Información referida a la CPU:\n");
     printf("%s", "Tipo de CPU");
-    printf("%s", buscarDatoSinTitulo("vendor_id", "/proc/cpuinfo", ':'));
+    buscarDatoSinTitulo("vendor_id", "/proc/cpuinfo", aux);
+    printf("%s", aux);
     printf("%s", "Modelo de CPU");
-    printf("%s", buscarDatoSinTitulo("model name", "/proc/cpuinfo", ':'));
+    buscarDatoSinTitulo("model name", "/proc/cpuinfo", aux);
+    printf("%s", aux);
 
     return;
 }
 
-char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte){//dato: es el string a buscar
+void buscarDatoSinTitulo(char *dato, char *path, char *contenido){//dato: es el string a buscar
     FILE *fp;
     fp = fopen (path,"r");
     if (fp==NULL) {
@@ -29,21 +32,18 @@ char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte){//dato: 
         exit (1);
     }
     char buffer[100]="";
-    char *punt;
-    int aux;
+    char *aux;
     while(!feof(fp)){ //mientras no se llegue al final del archivo
         fgets(buffer,100,fp); //Lee una linea del archivo
-        aux=strncmp(dato, buffer, strlen(dato)); //compara los primeros n caracteres
-        if(aux==0){
+        aux=strstr(buffer, dato);
+        if(aux!=NULL){
          	fclose(fp);
-            punt=buffer;//puntero al primer elemento
-            return punt+strlen(dato);
-            
+            strcpy(contenido, (aux+strlen(dato)));//copia los datos siguientes a la palabra clave en el buffer de parametro de la funcion
+            return;
         }
     }
     fprintf(stderr,"No se encontró el dato especificado");
     fclose(fp);
-    return NULL;
 }
 
 void leerArchivo(char *ruta, char *presentacion){//lee el archivo completo
@@ -77,7 +77,6 @@ void printFormato(char* label, long time){//cambia al formato hh:mm:ss.
 void printTiempoActivo(void){
     FILE* fp;
     double uptime, idleTime;
-/* Read the system uptime and accumulated idle time from /proc/uptime.*/
     fp = fopen ("/proc/uptime", "r");
     fscanf (fp, "%lf %lf\n", &uptime, &idleTime);
     fclose (fp);

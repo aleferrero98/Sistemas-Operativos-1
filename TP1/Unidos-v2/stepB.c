@@ -2,21 +2,22 @@
 #include <string.h>
 #include <stdlib.h>
 
-char* buscarDatoSinTitulo(char *dato, char *path, char caracterDeCorte);
+void buscarDatoSinTitulo(char *dato, char *path, char *contenido);
 
 void leerLineaArchivo(char *ruta, char *presentacion, char *datoAbuscar){//lee una linea especifica de un archivo
-    //char aux[100];
+    char aux[100];
     printf("%s", presentacion);
-    printf("%s", buscarDatoSinTitulo(datoAbuscar,ruta, ' '));//imprime la linea
+    buscarDatoSinTitulo(datoAbuscar,ruta, aux);
+    printf("%s", aux);//imprime la linea
 
     return;
 }
 
 void tiempoCPU(void){
-    char* linea;
+    char linea[100];
     long int user, nice, system, idle;
     printf("%s","Cantidad de tiempo de CPU utilizado para:\n" );
-    linea=buscarDatoSinTitulo("cpu","/proc/stat",' '); //me lee la linea que empieza con "cpu" y me devuelve lo que sigue
+    buscarDatoSinTitulo("cpu","/proc/stat",linea); //me lee la linea que empieza con "cpu" y me devuelve lo que sigue
     sscanf(linea, "%ld %ld %ld %ld", &user, &nice, &system, &idle);// lu es unsigned long
     printf("%s %ld %s\n","  ->Procesos normales en modo usuario:",user, "jiffies");
     printf("%s %ld %s\n","  ->Procesos niced en modo usuario:", nice, "jiffies");

@@ -15,7 +15,7 @@ void infoFileDescriptors(char *path){
 
 	int i=0;
 	char command[20],pid[8],user[15],fdpermisos[8],type[15],device[10],size[15],node[15],name[100];
-	printf("fd-permisos 		Tipo  		Nombre\n");
+	printf("fd-permisos 		Tipo  		 Path al fd\n");
 	while(!feof(fp)){ 
 		fgets(buffer,1000,fp);
 		if(i>0){
