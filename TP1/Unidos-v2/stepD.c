@@ -14,12 +14,12 @@ void infoFileDescriptors(char *path){
     }
 
 	int i=0;
-	char command[20],pid[8],user[15],fdpermisos[8],type[15],device[10],size[15],node[15],name[100];
+	char fdpermisos[8],type[15],name[100];
 	printf("fd-permisos 		Tipo  		 Path al fd\n");
 	while(!feof(fp)){ 
 		fgets(buffer,1000,fp);
 		if(i>0){
-			sscanf(buffer,"%s %s %s %s %s %s %s %s %s",command,pid,user,fdpermisos,type,device,size,node,name);
+			sscanf(buffer,"%*s %*s %*s %7s %14s %*s %*s %*s %99s",fdpermisos,type,name);
 			printf("%s 			 %s 		 %s\n",fdpermisos,type,name);
 		}
 		i++;

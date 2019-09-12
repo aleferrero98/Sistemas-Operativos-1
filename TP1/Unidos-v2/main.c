@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
                 tiempoCPU();
                 leerLineaArchivo("/proc/stat","Cantidad de cambios de contexto:","ctxt");
                 leerLineaArchivo("/proc/stat","Cantidad de procesos abiertos desde inicio del sistema:", "processes");        
-                for(int i = 0; optind < argc & i < 3; optind++, i++){      
+                for(int i = 0; (optind < argc) & (i < 3); optind++, i++){      
                     strcpy(extras[i],argv[optind]);
                 } 
                 impresionPeriodica(extras);
@@ -63,6 +63,12 @@ int main(int argc, char* argv[]) {
                 tiempoCPU();
                 leerLineaArchivo("/proc/stat","Cantidad de cambios de contexto:","ctxt");
                 leerLineaArchivo("/proc/stat","Numero de procesos creados desde inicio del sistema:", "processes");
+
+                strcpy(buffer,"");
+                strcat(buffer,"Kernel stack trace del proceso ");
+                strcat(buffer,optarg);
+                strcat(buffer,":");
+                printf("%s\n",buffer);
 
                 strcpy(buffer,""); //limpio el contenido del buffer
                 strcat(buffer, "sudo cat /proc/");
@@ -79,11 +85,7 @@ int main(int argc, char* argv[]) {
                 strcpy(buffer,""); //limpio el contenido del buffer
                 strcat(buffer,"lsof -a -p ");
                 strcat(buffer,optarg);
-                /*strcat(buffer, "ls -l /proc/");
-                strcat(buffer, optarg);//optarg es el argumento para esta opcion
-                //strcat(buffer, "/fd > fileDescriptors.txt");//guarda los datos en un txt para despues leer lo que necesita      
-                strcat(buffer, "/fd");*/
-                //printf("%s\n",buffer);
+          
                 strcat(buffer, " > fileDescriptors.txt");//guarda los datos en un txt para despues leer lo que necesita 
                 system(buffer); //se crea el archivo con toda la info
                 printf("%s","Datos relativos al file descriptor del proceso con id ");
@@ -107,8 +109,8 @@ int main(int argc, char* argv[]) {
                 long int soft, hard;
 
                 sscanf(mensaje, "%ld %ld", &soft, &hard);
-                printf("%s %ld %s\n","  ->Limite de software:",soft, "archivos");
-                printf("%s %ld %s\n","  ->Limite de hardware:", hard, "archivos");
+                printf("%s %ld %s\n","  ->Soft limit:",soft, "archivos");
+                printf("%s %ld %s\n","  ->Hard limit:", hard, "archivos");
 
                 break;
             case -1:    //si no hay caracteres de opcion o si se llega al final de la lista de opciones, getOpt devuelve -1

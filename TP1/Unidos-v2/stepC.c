@@ -38,7 +38,7 @@ int peticionesDisco(){
         fgets(buffer,200,archivo);
         aux = strstr(buffer,"sda ");
         if(aux != NULL){
-            sscanf(aux,"%s %s %s %s %s %s",datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
+            sscanf(aux,"%19s %19s %19s %19s %19s %19s",datos[0],datos[1],datos[2],datos[3],datos[4],datos[5]);
         }
     }
     fclose(archivo);

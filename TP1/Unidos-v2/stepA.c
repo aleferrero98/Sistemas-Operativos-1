@@ -60,8 +60,8 @@ void leerArchivo(char *ruta, char *presentacion){//lee el archivo completo
 
 void imprimirDatos(FILE *archivo){//imprime todo el archivo
     char caracter;
-    while((caracter = fgetc(archivo)) != EOF){
-        printf("%c",caracter);
+    while(!feof(archivo)){
+        printf("%c",fgetc(archivo));
     }
 }
 
@@ -87,11 +87,11 @@ void printTiempoActivo(void){
 
 void printFecha(void){//imprime la fecha actual
     time_t t;
-    struct tm *tm;
+    struct tm newFecha;
     char fecha[100];
     t=time(NULL);
-    tm=localtime(&t);
-    strftime(fecha, 100, "%d/%m/%Y", tm);
+    localtime_r(&t,&newFecha);
+    strftime(fecha, 100, "%d/%m/%Y", &newFecha);
     printf("%s", "La fecha es: ");
     printf("%s \n", fecha);
     
@@ -99,11 +99,11 @@ void printFecha(void){//imprime la fecha actual
 
 void printHora(void){//imprime la hora actual
     time_t t;
-    struct tm *tm;
+    struct tm newhora;
     char hora[100];
     t=time(NULL);
-    tm=localtime(&t);
-    strftime(hora, 100, "%H:%M:%S", tm);
+    localtime_r(&t,&newhora);
+    strftime(hora, 100, "%H:%M:%S", &newhora);
     printf("%s", "La hora es: ");
     printf("%s \n", hora);
 }
