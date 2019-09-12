@@ -32,8 +32,8 @@ void buscarDatoSinTitulo(char *dato, char *path, char *contenido){//dato: es el 
         exit (1);
     }
     char buffer[100]="";
-    char *aux;
     while(!feof(fp)){ //mientras no se llegue al final del archivo
+        char *aux;
         fgets(buffer,100,fp); //Lee una linea del archivo
         aux=strstr(buffer, dato);
         if(aux!=NULL){
@@ -59,7 +59,6 @@ void leerArchivo(char *ruta, char *presentacion){//lee el archivo completo
 }
 
 void imprimirDatos(FILE *archivo){//imprime todo el archivo
-    char caracter;
     while(!feof(archivo)){
         printf("%c",fgetc(archivo));
     }

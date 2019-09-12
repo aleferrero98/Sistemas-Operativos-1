@@ -32,9 +32,8 @@ int peticionesDisco(){
     archivo = fopen("/proc/diskstats","r");
     char datos[6][20];
     char buffer[200];
-    char *aux;
-
     for(int i = 0; !feof(archivo); i++){
+        char *aux;
         fgets(buffer,200,archivo);
         aux = strstr(buffer,"sda ");
         if(aux != NULL){
