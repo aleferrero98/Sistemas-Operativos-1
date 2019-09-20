@@ -64,8 +64,8 @@ void impresionPeriodica(char extras[3][10]){
     else{
         int limite = atoi(extras[1]);
         int intervalos = atoi(extras[0]);
-
-        for(int i = 0; i < limite; i += intervalos){ 
+        //printf("limite %d intervalos %d\n",limite,intervalos);
+        for(int i = 0; i < limite; i += intervalos){ //i = intervalos porque la primera iteracion ya ocurrio
             sleep(intervalos);
             printf("\n");
             printf("Peticiones a disco: %d\n",peticionesDisco());
