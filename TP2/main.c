@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
+#include <unistd.h>
 
 void prompt(void);
 void leerArchivo(char *ruta, char *buffer);
 void realizarAccion(char *comando);
+void actuar(char *comando);
 
 int main(int argc, char *argv[]){
     char comandos[100]="";
@@ -13,9 +15,10 @@ int main(int argc, char *argv[]){
     while(1){
         prompt();
         //scanf("%c", comandos);
-        scanf("%s", comandos);
+        //scanf("%s", comandos); //no toma bien toda la linea
+        fgets(comandos,100,stdin);
         //realizarAccion(comandos);
-        system(comandos);
+        actuar(comandos);
         strcpy(comandos, "");
     }
 
@@ -26,10 +29,19 @@ void prompt(void){//nombreUsuario@nombreMaquina:~$
     char buffer[100]="";
     //system("echo $USER > nombreUsuario.txt");//no se si esta bien usar esto
     system("whoami > nombreUsuario.txt");
-    leerArchivo("nombreUsuario.txt",buffer);
+
+    char username[20]="";
+
+    leerArchivo("nombreUsuario.txt",username);
+    strcat(buffer,username);
     strcat(buffer,"@");
     leerArchivo("/proc/sys/kernel/hostname", buffer);
-    strcat(buffer,":~$ ");
+    strcat(buffer,":~");
+    //cwd
+    char cwd[256];
+    if(getcwd(cwd,sizeof(cwd))==NULL) perror("getcwd() error");
+    strcat(buffer,(strstr(cwd,username)+-1+sizeof(strtok(username," "))));
+    strcat(buffer,"$ ");
     printf("%s", buffer);
 }
 void leerArchivo(char *ruta, char *buffer){//abre el archivo de la ruta indicada y te devuelve el contenido
@@ -47,13 +59,28 @@ void leerArchivo(char *ruta, char *buffer){//abre el archivo de la ruta indicada
     fclose(fp);
 }
 
+void actuar(char *comando){
+    char *aux;
+    printf("completo %s",comando);
+    aux = strtok(comando," ");
+    aux = strtok(NULL," ");
+    printf("primera parte %s a\n", comando);
+    printf("segunda parte %s a\n", aux);
+
+    if(strstr(comando,"cd") != NULL){
+        chdir(aux); //ver si funca con aux sin recortar
+    }
+}
+
+
+/*
 void realizarAccion(char *comando){
 int next_option;
     const char* const short_options = "";
     const struct option long_option[] = {
-            {"cd",optional_argument,NULL,''},
-            {"ls", optional_argument,NULL,''},
-            {"exit", no_argument,NULL,''},
+            {"cd",optional_argument,NULL,0},
+            {"ls", optional_argument,NULL,0},
+            {"exit", no_argument,NULL,0},
             {NULL,0,NULL,0}
     };
 
@@ -61,7 +88,7 @@ int next_option;
         next_option=getopt_long_only(argc, argv, "", long_option, NULL);//solo parametros largos    
         switch(next_option){
             case 'cd':
-                
+                printf("cd");
                 break;
             case 'ls':
                 
