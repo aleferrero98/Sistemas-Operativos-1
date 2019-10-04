@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
-#include <unistd.h>
+#include <unistd.h>//contiene funciones para el manejo de archivos y directorios
+#include <sys/types.h>//contiene funciones de busqueda y ordenamiento de directorios y manipulacion de archivos
 #define clrscr() printf("\e[1;1H\e[2J") //definimos un macro para limpiar la pantalla
 
 void prompt(void);
@@ -28,12 +29,13 @@ int main(int argc, char *argv[]){
 
 void prompt(void){//nombreUsuario@nombreMaquina:~$
     char buffer[100]="";
-    //system("echo $USER > nombreUsuario.txt");//no se si esta bien usar esto
-    system("whoami > nombreUsuario.txt");
+    //system("echo $USER > /tmp/nombreUsuario.txt");//no se si esta bien usar esto
+    system("whoami > /tmp/nombreUsuario.txt");//crea txt como un archivo temporal
 
     char username[20]="";
 
-    leerArchivo("nombreUsuario.txt",username);
+    leerArchivo("/tmp/nombreUsuario.txt",username);
+    
     strcat(buffer,username);
     strcat(buffer,"@");
     leerArchivo("/proc/sys/kernel/hostname", buffer);
@@ -41,7 +43,6 @@ void prompt(void){//nombreUsuario@nombreMaquina:~$
     //cwd
     char cwd[256];
     if(getcwd(cwd,sizeof(cwd))==NULL) perror("getcwd() error");
-    //strcat(buffer,(strstr(cwd,username)+-1+sizeof(strtok(username," "))));
     strcat(buffer,strstr(cwd,username)+strlen(strtok(username," ")));
     strcat(buffer,"$ ");
     printf("%s", buffer);
@@ -115,26 +116,3 @@ int next_option;
         }
     }while(next_option != -1);
 }
-
-/*int main(int argc, char* argv[]) {
-    int nextOption;
-    const char* const shortOptions = "slt:p:f:";//: indica que necesita si o si parametros, :: los parametros son opcionales
-
-    do{
-        nextOption=getopt(argc,argv,shortOptions);
-        char buffer[50]="";
-        switch(nextOption){
-            case 's':
-               
-                break;
-            
-            case -1:    //si no hay caracteres de opcion o si se llega al final de la lista de opciones, getOpt devuelve -1
-                break;
-            case '?':
-                fprintf (stderr, "La opción -%c requiere un argumento.\n", optopt);
-                abort();
-                break;
-            default:
-                abort();//si no hubo parametros ni un -1 entonces hay un error
-        }
-    }while(nextOption != -1);*/
