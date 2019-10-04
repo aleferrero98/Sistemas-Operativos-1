@@ -3,7 +3,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>
-#define clrscr() printf("\e[1;1H\e[2J")
+#define clrscr() printf("\e[1;1H\e[2J") //definimos un macro para limpiar la pantalla
 
 void prompt(void);
 void leerArchivo(char *ruta, char *buffer);
@@ -74,6 +74,9 @@ void actuar(char *comando){
     }
     if(strstr(comando,"clr")){
         clrscr();
+    }
+    if(strstr(comando,"quit")){
+        exit(0);
     }
 }
 
