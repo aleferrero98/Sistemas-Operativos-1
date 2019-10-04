@@ -3,6 +3,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>
+#define clrscr() printf("\e[1;1H\e[2J")
 
 void prompt(void);
 void leerArchivo(char *ruta, char *buffer);
@@ -40,7 +41,8 @@ void prompt(void){//nombreUsuario@nombreMaquina:~$
     //cwd
     char cwd[256];
     if(getcwd(cwd,sizeof(cwd))==NULL) perror("getcwd() error");
-    strcat(buffer,(strstr(cwd,username)+-1+sizeof(strtok(username," "))));
+    //strcat(buffer,(strstr(cwd,username)+-1+sizeof(strtok(username," "))));
+    strcat(buffer,strstr(cwd,username)+strlen(strtok(username," ")));
     strcat(buffer,"$ ");
     printf("%s", buffer);
 }
@@ -63,12 +65,15 @@ void actuar(char *comando){
     char *aux;
     printf("completo %s",comando);
     aux = strtok(comando," ");
-    aux = strtok(NULL," ");
+    aux = strtok(NULL,"\n");
     printf("primera parte %s a\n", comando);
     printf("segunda parte %s a\n", aux);
 
     if(strstr(comando,"cd") != NULL){
-        chdir(aux); //ver si funca con aux sin recortar
+        if(chdir(aux)) perror("chdri() error"); 
+    }
+    if(strstr(comando,"clr")){
+        clrscr();
     }
 }
 
