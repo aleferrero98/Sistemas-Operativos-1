@@ -10,6 +10,7 @@ void prompt(void);
 void leerArchivo(char *ruta, char *buffer);
 void realizarAccion(char *comando);
 void actuar(char *comando);
+void echo(char *linea);
 
 int main(int argc, char *argv[]){
     char comandos[100]="";
@@ -76,11 +77,27 @@ void actuar(char *comando){
     if(strstr(comando,"clr")){
         clrscr();
     }
+    if(strstr(comando,"echo")){
+        echo(aux);
+    }
+
     if(strstr(comando,"quit")){
         exit(0);
     }
 }
 
+void echo(char *linea){
+    char buffer[256] = "";
+    for(int i = 0, j = 0; i < strlen(linea); i++){
+    if(linea[i] != ' '){
+        char c[2];
+        c[0] = linea[i];
+        strcat(buffer,c);
+        if((linea[i+1] == ' ' )) strcat(buffer," ");
+    } 
+  }
+  printf("%s\n",buffer);
+}
 
 /*
 void realizarAccion(char *comando){
@@ -116,3 +133,4 @@ int next_option;
         }
     }while(next_option != -1);
 }
+*/
