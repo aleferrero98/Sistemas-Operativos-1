@@ -14,8 +14,9 @@ int main(int argc, char *argv[]){
             //scanf("%c", comandos);
             //scanf("%s", comandos); //no toma bien toda la linea
             fgets(comandos,100,stdin);
-            //realizarAccion(comandos);
-            actuar(comandos);
+            if(!isEmpty(comandos) && comandos[0]!='\n'){
+                actuar(comandos);
+            }
             strcpy(comandos, "");
         }
     }else{
@@ -32,6 +33,16 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
+int isEmpty(char linea[]){//verifica si la linea solo tiene espacios
+    int i = 0;
+    while(linea[i]!='\n'){
+        if(linea[i]!=' '){
+            return 0;//falso
+        }
+        i++;
+    }
+    return 1; //verdadero
+}
 /*
 void realizarAccion(char *comando){
 int next_option;

@@ -6,6 +6,6 @@
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>//contiene funciones para el manejo de archivos y directorios
-#include <sys/types.h>//contiene funciones de busqueda y ordenamiento de directorios y manipulacion de archivos
+int isEmpty(char linea[]);
 
 #endif //_MAIN_H_
