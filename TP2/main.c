@@ -2,18 +2,31 @@
 #include "main.h"
 #include "prompt.h"
 #include "commands.h"
+#include "batchFile.h"
 
 
 int main(int argc, char *argv[]){
     char comandos[100]="";
     
-    while(1){
-        prompt();
-        //scanf("%c", comandos);
-        //scanf("%s", comandos); //no toma bien toda la linea
-        fgets(comandos,100,stdin);
-        actuar(comandos);
-        strcpy(comandos, "");
+    if(argv[1] == NULL){
+        while(1){
+            prompt();
+            //scanf("%c", comandos);
+            //scanf("%s", comandos); //no toma bien toda la linea
+            fgets(comandos,100,stdin);
+            //realizarAccion(comandos);
+            actuar(comandos);
+            strcpy(comandos, "");
+        }
+    }else{
+        char file[256];
+        for(int i = 1; i < argc; i++){
+            strcat(file,argv[i]);
+            if(argv[i+1] != NULL) strcat(file," ");
+        }
+ //       printf("%s\n",file);
+        leerBatchfile(file);
+        actuar("quit");
     }
 
     return 0;

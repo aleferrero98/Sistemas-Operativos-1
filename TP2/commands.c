@@ -3,11 +3,11 @@
 
 void actuar(char *comando){
     char *aux;
-    printf("completo %s",comando);
+    printf("comando %s",comando);
     aux = strtok(comando," ");
     aux = strtok(NULL,"\n");
-    printf("primera parte %s a\n", comando);
-    printf("segunda parte %s a\n", aux);
+//    printf("primera parte %s a\n", comando);
+//    printf("segunda parte %s a\n", aux);
 
     if(strstr(comando,"cd") != NULL){
         if(chdir(aux)) perror("chdri() error"); 
@@ -16,6 +16,7 @@ void actuar(char *comando){
     }else if(strstr(comando,"echo")){
         echo(aux);
     }else if(strstr(comando,"quit")){
+        printf("\n");
         exit(0);
     }
 }
