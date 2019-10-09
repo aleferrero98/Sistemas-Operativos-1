@@ -4,15 +4,11 @@
 
 void actuar(char *comando){
     char *aux;
-   // printf("comando %s\n",comando);
     eliminarEspacios(comando);//me saca todos los espacios del comienzo
-    printf("comando %s",comando);
 
-    //if(strstr(comando,"cd ") != NULL){
     if(strncmp(comando,"cd ",3) == 0){
         aux = strtok(comando," ");//me busca todo lo que sigue al comando
         aux = strtok(NULL," \n");//el proximo caracter puede ser espacio o \n
-        //printf("aux %s",aux);
         if(chdir(aux)) perror("chdri() error"); 
 
     }else if(strncmp(comando,"clr ",4) == 0){
@@ -25,13 +21,9 @@ void actuar(char *comando){
         printf("\n");
         exit(0);
     }else{//si no es ningun comando, entonces es un programa a ejecutar
-        printf("comando 2 %s\n",comando);
+       
         char *argList[10];
         separarPalabras(comando,argList);
-        printf("argList %s\n",argList[0]);
-        printf("argList %s\n",argList[1]);
-        printf("argList %s\n",argList[2]);
-
         ejecutarPrograma(argList);
     }
 }
@@ -52,19 +44,6 @@ void separarPalabras(char *linea, char *buffer[]){//separa el argumento string p
     buffer[i]=NULL;//ultimo elemento del arreglo debe ser nulo
     printf("i es %d\n", i);
 }
-/*
-void echo(char *linea){
-    char buffer[256] = "";
-    for(int i = 0, j = 0; i < strlen(linea); i++){
-    if(linea[i] != ' '){
-        char c[2];
-        c[0] = linea[i];
-        strcat(buffer,c);
-        if((linea[i+1] == ' ' )) strcat(buffer," ");
-    } 
-  }
-  printf("%s\n",buffer);
-}*/
 void eliminarEspacios(char *linea){//elimina todos los espacios y tabulaciones que pueda tener un string "linea"
     char delimitador[] = " \t\n";
     char buffer[100]="";

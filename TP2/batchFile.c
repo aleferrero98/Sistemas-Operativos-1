@@ -3,11 +3,11 @@
 #include "commands.h"
 #include "prompt.h"
 
-void leerBatchfile(char *archivo){
+void leerBatchfile(char *archivo){//lee archivo desde el path que se le pasa
     printf("Archivo: %s\n",archivo);
     FILE *fp;
     fp = fopen(archivo,"r");
-    if (fp==NULL) {
+    if (fp==NULL) {//verifica que no haya error
         fputs ("File error",stderr);
         exit (1);
     }

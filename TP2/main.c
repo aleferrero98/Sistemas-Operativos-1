@@ -11,8 +11,6 @@ int main(int argc, char *argv[]){
     if(argv[1] == NULL){
         while(1){
             prompt();
-            //scanf("%c", comandos);
-            //scanf("%s", comandos); //no toma bien toda la linea
             fgets(comandos,100,stdin);
             if(!isEmpty(comandos) && comandos[0]!='\n'){
                 actuar(comandos);
