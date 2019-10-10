@@ -21,14 +21,18 @@ void actuar(char *comando){
         printf("\n");
         exit(0);
     }else{//si no es ningun comando, entonces es un programa a ejecutar
-       
+        int background = FALSE;
         char *argList[10];
-        separarPalabras(comando,argList);
-        ejecutarPrograma(argList);
+        background = separarPalabras(comando,argList);
+        ejecutarPrograma(argList,background);
     }
 }
-void separarPalabras(char *linea, char *buffer[]){//separa el argumento string palabra por palabra en un arreglo de strings
-    char delimitador[] = " \n";
+/*
+Separa el argumento string palabra por palabra en un arreglo de strings
+Retorna true si el proceso debe ejecutarse en segundo plano (ultimo string = &)
+*/
+int separarPalabras(char *linea, char *buffer[]){
+    char delimitador[] = " \n";                    
     char *token = strtok(linea, delimitador);
     int i=0;
     if(token != NULL){
@@ -41,8 +45,15 @@ void separarPalabras(char *linea, char *buffer[]){//separa el argumento string p
             token = strtok(NULL, delimitador);
         }
     }
-    buffer[i]=NULL;//ultimo elemento del arreglo debe ser nulo
-    printf("i es %d\n", i);
+    
+    if(strcmp(buffer[i-1],"&")==0){//verifica si el ultimo elemento ingresado como comando es el &
+        buffer[i-1]=NULL;//reemplaza el ultimo elemento & por null
+        return TRUE;
+    }else{
+        buffer[i]=NULL;//ultimo elemento del arreglo debe ser nulo
+        return FALSE;
+    } 
+    
 }
 void eliminarEspacios(char *linea){//elimina todos los espacios y tabulaciones que pueda tener un string "linea"
     char delimitador[] = " \t\n";

@@ -23,7 +23,6 @@ int main(int argc, char *argv[]){
             strcat(file,argv[i]);
             if(argv[i+1] != NULL) strcat(file," ");
         }
- //       printf("%s\n",file);
         leerBatchfile(file);
         actuar("quit");
     }
@@ -35,11 +34,11 @@ int isEmpty(char linea[]){//verifica si la linea solo tiene espacios
     int i = 0;
     while(linea[i]!='\n'){
         if(linea[i]!=' '){
-            return 0;//falso
+            return FALSE;//falso
         }
         i++;
     }
-    return 1; //verdadero
+    return TRUE; //verdadero
 }
 /*
 void realizarAccion(char *comando){
