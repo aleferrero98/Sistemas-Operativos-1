@@ -1,6 +1,7 @@
 #include "main.h"
 #include "commands.h"
 #include "program.h"
+#include "redirection.h"
 
 void actuar(char *comando){
     char *aux;
@@ -73,5 +74,12 @@ void eliminarEspacios(char *linea){//elimina todos los espacios y tabulaciones q
 }
 void echo(char *linea){
     eliminarEspacios(linea);
-    printf("%s", linea);
+    if(strpbrk(linea,"<>") != NULL){
+        char *arg[10];
+        char aux[256] = "echo ";
+        strcat(aux,linea);
+        separarPalabras(linea,arg);
+        redireccionar(arg);   
+    }
+    else printf("%s", linea);
 }

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>//contiene funciones para el manejo de archivos y directorios
+#include <fcntl.h> //file control options
 int isEmpty(char linea[]);
 
 #endif //_MAIN_H_
