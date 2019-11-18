@@ -78,7 +78,7 @@ void echo(char *linea){
         char *arg[10];
         char aux[256] = "echo ";
         strcat(aux,linea);
-        separarPalabras(linea,arg);
+        separarPalabras(aux,arg);
         redireccionar(arg);   
     }
     else printf("%s", linea);
