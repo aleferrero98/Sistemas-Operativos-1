@@ -7,6 +7,10 @@
 #include <getopt.h>
 #include <unistd.h>//contiene funciones para el manejo de archivos y directorios
 #include <fcntl.h> //file control options
+#include <sys/types.h>//contiene funciones de busqueda y ordenamiento de directorios y manipulacion de archivos
+#include <sys/wait.h>
+
 int isEmpty(char linea[]);
+int checkIO(char linea[]);
 
 #endif //_MAIN_H_

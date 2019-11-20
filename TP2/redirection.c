@@ -19,12 +19,12 @@ void redireccionar(char **argv){
 
     for(i=0;argv[i] != NULL;i++)
     {
-        if(strcmp(argv[i],"<")==0)
+        /*if(strcmp(argv[i],"<")==0)
         {        
             argv[i]=NULL;
             strcpy(input,argv[i+1]);
             in=2;           
-        }               
+        }    */           
 
         if(strcmp(argv[i],">")==0)
         {      
@@ -35,7 +35,7 @@ void redireccionar(char **argv){
     }
 
     //if '<' char was found in string inputted by user
-    if(in)
+   /* if(in)
     {   
 
         // fdo is file-descriptor
@@ -48,7 +48,7 @@ void redireccionar(char **argv){
         dup2(fd0, STDIN_FILENO); 
 
         close(fd0); 
-    }
+    }*/
 
     //if '>' char was found in string inputted by user 
     if (out)

@@ -11,6 +11,7 @@ main.h
 main.o
 Makefile
 myshell
+nombre.txt
 program.c
 program.h
 program.o
