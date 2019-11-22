@@ -13,7 +13,103 @@ int main(int argc, char *argv[]){
             prompt();
             fgets(comandos,100,stdin);
             if(!isEmpty(comandos) && comandos[0]!='\n'){
-                actuar(comandos);
+                if(checkIO(comandos) && strstr(comandos,"echo") == NULL){
+                    pid_t child_pid;
+                    int error, child_status;
+                    child_pid = fork ();//duplica el proceso
+
+                    if(child_pid == 0){
+
+                    int fd0,fd1,i,in=0,out=0;
+                    char input[64],output[64];
+                    char *prog;
+                    prog = argv[0];
+
+
+                    for(i=0;comandos[i] != '\n';i++)
+                    {
+                        if(comandos[i] == '<')
+                        {        
+                            char *aux;
+                            aux = strstr(comandos, "<") + 2;
+                       //     printf("aux: %s",aux);            
+                            strcpy(input, aux);
+                            strtok(input, "\n");
+                            printf("input:%s\n",input);
+                            prog = strtok(comandos,"<");
+                            strtok(prog," ");
+                            printf("%s\n",prog);
+                            comandos[i]='\0';
+                         //   strcpy(input,comandos[i+1]);
+                            in=2;           
+                        }               
+
+                        if(comandos[i] == '>')
+                        {      
+                            //comandos[i]=NULL;
+                            char *aux;
+                            aux = strstr(comandos, ">") + 2;
+                         //   printf("aux: %s",aux);            
+                            strcpy(output, aux);
+                            strtok(output, "\n");
+                            printf("input:%s\n",output);
+                            prog = strtok(comandos,"<");
+                            strtok(prog," ");
+                            printf("%s\n",prog);
+                            comandos[i]='\0';
+                            //strcpy(output,comandos[i+1]);
+                            out=2;
+                        }         
+                    }
+
+                    //si el char '<' se encontro en string
+                    if(in)
+                    {   
+
+                        int fd0;
+                        if ((fd0 = open(input, O_RDONLY, 0)) < 0) {
+                            perror("No se pudo abrir input file");
+                            exit(0);
+                        }           
+                        dup2(fd0, STDIN_FILENO); 
+
+                        close(fd0); 
+                    }
+
+                    if (out)
+                    {
+
+                        int fd1 ;
+                        if ((fd1 = creat(output , 0644)) < 0) {
+                            perror("No se pudo abrir output file");
+                            exit(0);
+                        }           
+
+                        dup2(fd1, STDOUT_FILENO); 
+                        close(fd1);
+                    }
+
+                    //execvp(*argv, argv);
+                    execvp(prog,argv);
+                    perror("execvp");
+                    //_exit(1);
+                    abort();
+                     
+                    }
+                     else if((child_pid) < 0)
+                    {     
+                        printf("fork() fallo!\n");
+                        exit(1);
+                    }
+
+                    else {                                  /* para el padre:      */
+
+                        error=waitpid(child_pid, &child_status, 0);
+                        if(error==-1) perror("Error al esperar proceso hijo\n");
+                    
+                    }
+                }
+                else actuar(comandos);
             }
             strcpy(comandos, "");
         }
@@ -27,6 +123,14 @@ int main(int argc, char *argv[]){
         actuar("quit");
     }
 
+    return 0;
+}
+
+int checkIO(char linea[]){
+    for(int i = 0; i < strlen(linea); i++){
+        if(linea[i] == '<') return 1;
+        if(linea[i] == '>') return 1;
+    }
     return 0;
 }
 
