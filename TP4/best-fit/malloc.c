@@ -19,7 +19,7 @@ void *malloc(size_t size){
 		trace = head;
 		while(trace != NULL){
 			if(trace->allocated == 0){
-				if(trace->size >= size + sizeof(struct Block) && (bestFit == NULL || trace->size < bestFit->size)){
+				if(trace->size >= size + sizeof(struct mab) && (bestFit == NULL || trace->size < bestFit->size)){
 					bestFit = trace;
 					if(bestFit->size == size + sizeof(struct mab)){
 						//encontramos el tamano perfecto
@@ -64,36 +64,36 @@ void *malloc(size_t size){
 }
 
 void free(void *ptr){
-	mabPtr free = ptr-sizeof(struct mab);
-	free->allocated = 0;
-	if(free != tail){
+	mabPtr aux = ptr-sizeof(struct mab);
+	aux->allocated = 0;
+	if(aux != tail){
 		//si el bloque no es el ultimo
-		if(free != head && free->prev->allocated == 0){
+		if(aux != head && aux->prev->allocated == 0){
 			//el bloque no es la cabeza, se une con el anterior
-			free->prev->next = free->next;
-			free->next->prev = free->prev;
-			free->prev->size += free->size;
-			free = free->prev;
+			aux->prev->next = aux->next;
+			aux->next->prev = aux->prev;
+			aux->prev->size += aux->size;
+			aux = aux->prev;
 		}
-		if(free->next->allocated == 0){
+		if(aux->next->allocated == 0){
 			//se une con el siguiente
-			free->size += free->next->size;
-			free->next = free->next->next;
-			free->next->prev = free;
+			aux->size += aux->next->size;
+			aux->next = aux->next->next;
+			aux->next->prev = aux;
 		}
 	}else{
 		//si el bloque es la cola
-		tail = free;
-		if(free == head){
+		tail = aux;
+		if(aux == head){
 			//si es el unico bloque que queda
 			head = tail = NULL;
-			sbrk(-free->size);
+			sbrk(-aux->size);
 			return;
 		}else{
 			//achicamos el heap, seteamos una nueva tail
-			tail = free->prev;
+			tail = aux->prev;
 			tail->next = NULL;
-			sbrk(-free->size);
+			sbrk(-aux->size);
 			if(tail->allocated == 0){
 				//tail esta ocupada, hacemos free en la cola
 				free((char*)tail + sizeof(struct mab));

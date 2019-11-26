@@ -6,10 +6,10 @@
 
 
 struct mab {
-    int allocated;    // whether block is occupied
-    size_t size;             // size of block (including header)
-    struct Block *prev;   // pointer to previous block
-    struct Block *next;   // pointer to next block
+    int allocated;    // si el bloque esta ocupado
+    size_t size;             // tamaño del bloque (incluyendo header)
+    struct mab *prev;   // puntero al bloque previo
+    struct mab *next;   // puntero al bloque siguiente
 };
 typedef struct mab *mabPtr;
 
