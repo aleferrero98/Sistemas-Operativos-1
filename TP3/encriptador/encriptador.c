@@ -103,7 +103,7 @@ static ssize_t device_read(struct file *filp,	/* ver include/linux/fs.h  */
          * kernel space to user space. It supports simple types like 
          * char and int, but not larger data types like structures or arrays.
 		 */
-		put_user(*(msg_Ptr++), buffer++);//
+		put_user(*(msg_Ptr++), buffer++);
 
 		length--;
 		bytes_read++;

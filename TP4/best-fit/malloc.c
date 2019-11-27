@@ -1,8 +1,10 @@
 #include "malloc.h"
 
-void *malloc(size_t size){
+void *malloc1(size_t size){
 	mabPtr bestFit = NULL;
 	mabPtr trace = NULL;
+
+	printf("entrando malloc\n");
 
 	if(head == NULL){
 		//inicializamos head y tail
@@ -63,9 +65,10 @@ void *malloc(size_t size){
 	}	
 }
 
-void free(void *ptr){
+void free1(void *ptr){
 	mabPtr aux = ptr-sizeof(struct mab);
 	aux->allocated = 0;
+	printf("entrando free\n");
 	if(aux != tail){
 		//si el bloque no es el ultimo
 		if(aux != head && aux->prev->allocated == 0){
@@ -96,7 +99,7 @@ void free(void *ptr){
 			sbrk(-aux->size);
 			if(tail->allocated == 0){
 				//tail esta ocupada, hacemos free en la cola
-				free((char*)tail + sizeof(struct mab));
+				free1((char*)tail + sizeof(struct mab));
 			}
 		}
 	}

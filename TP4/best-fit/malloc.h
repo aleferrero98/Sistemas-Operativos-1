@@ -1,9 +1,7 @@
-#include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <assert.h>
 #include <sys/types.h>
-
 
 struct mab {
     int allocated;    // si el bloque esta ocupado
@@ -13,8 +11,8 @@ struct mab {
 };
 typedef struct mab *mabPtr;
 
-void *malloc(size_t size);
-void free(void *ptr);
+void *malloc1(size_t size);
+void free1(void *ptr);
 
 mabPtr head;
 mabPtr tail;
