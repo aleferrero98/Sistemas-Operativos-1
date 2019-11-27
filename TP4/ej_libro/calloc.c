@@ -1,9 +1,12 @@
 #include "headerFiles.h"
+#include <stdio.h>
 
-void *calloc(size_t number , size_t size){
+void *calloc1(size_t number , size_t size){
 	size_t *new;
 	size_t s4 ,i;
-	new = malloc(number * size);
+
+	printf("entrando a calloc\n");
+	new = malloc1(number * size);
 	if(new){
 		s4 = align4(number*size)<<2;
 		for(i=0; i<s4 ; i++) new[i] = 0;

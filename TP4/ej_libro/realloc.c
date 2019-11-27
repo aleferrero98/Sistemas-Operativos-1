@@ -1,11 +1,14 @@
 #include "headerFiles.h"
+#include <stdio.h>
 
-void *realloc(void *p, size_t size)
-{
+void *realloc1(void *p, size_t size){
 	size_t s;
 	t_block b, new;
 	void *newp;
-	if(!p) return (malloc(size));
+
+	printf("entrando a realloc\n");
+
+	if(!p) return (malloc1(size));
 	if(valid_addr(p)){
 		s = align4(size);
 		b = get_block(p);
@@ -14,11 +17,11 @@ void *realloc(void *p, size_t size)
 		}else{
 			/* Try fusion with next if possible */
 			if (b->next && b->next->free && (b->size + BLOCK_SIZE + b->next->size) >= s){
-				fusion (b);
+				fusion(b);
 				if(b->size - s >= (BLOCK_SIZE + 4)) split_block(b,s);
 			}else{
 				/* good old realloc with a new block */
-				newp = malloc(s);
+				newp = malloc1(s);
 				if(!newp)
 					/* we ’re doomed ! */
 					return (NULL);
@@ -27,7 +30,7 @@ void *realloc(void *p, size_t size)
 				/* Copy data */
 				copy_block(b,new);
 				/* free the old one */
-				free(p);
+				free1(p);
 				return (newp);
 			}
 		}
@@ -39,7 +42,7 @@ void *realloc(void *p, size_t size)
 /* Copy data from block to block */
 void copy_block(t_block src , t_block dst)
 {
-	int *sdata ,* ddata ;
+	int *sdata , *ddata ;
 	size_t i;
 	sdata = src->ptr;
 	ddata = dst->ptr;

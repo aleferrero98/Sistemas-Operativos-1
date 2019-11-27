@@ -1,7 +1,8 @@
 #include "headerFiles.h"
+#include <stdio.h>
 void *base = NULL;
 
-void split_block (t_block b, size_t s)
+void split_block(t_block b, size_t s)
 {
 	t_block new;
 	new = (t_block)(b->data + s);
@@ -12,16 +13,14 @@ void split_block (t_block b, size_t s)
 	new->ptr = new->data;
 	b->size = s;
 	b->next = new;
-	if (new->next) new->next->prev = new;
+	if(new->next) new->next->prev = new;
 }
 
 t_block extend_heap(t_block last , size_t s)
 {
-	int sb;
 	t_block b;
 	b = sbrk(0);
-	sb = (int) sbrk(BLOCK_SIZE + s);
-	if(sb < 0) return (NULL);
+	sbrk(BLOCK_SIZE + s);
 	b->size = s;
 	b->next = NULL;
 	b->prev = last;
@@ -31,11 +30,11 @@ t_block extend_heap(t_block last , size_t s)
 	return (b);
 }
 
-void * malloc(size_t size){
+void *malloc1(size_t size){
 	t_block b,last;
 	size_t s;
 	s = align4(size);
-
+	printf("entrando a malloc\n");
 	if(base){
 		/* First find a block */
 		last = base;
@@ -48,14 +47,19 @@ void * malloc(size_t size){
 		}else{
 			/* No fitting block , extend the heap */
 			b = extend_heap(last ,s);
-			if (!b)
-			return (NULL);
+			if(!b){
+				printf("ERROR EN malloc1");
+				return (NULL);
+			}
 		}
 	}else{
 		/* first time */
 		b = extend_heap(NULL ,s);
-		if(!b)
+		if(!b){
+			printf("ERROR EN malloc2");
 			return (NULL);
+		}
+			
 		base = b;
 	}
 	return (b->data);
