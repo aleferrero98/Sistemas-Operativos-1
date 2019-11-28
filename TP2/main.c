@@ -19,8 +19,8 @@ int main(int argc, char *argv[]){
                     child_pid = fork ();//duplica el proceso
 
                     if(child_pid == 0){
-
-                    int fd0,fd1,i,in=0,out=0;
+                    //int fd0,fd1,i,in=0,out=0;
+                    int i,in=0,out=0;
                     char input[64],output[64];
                     char *prog;
                     prog = argv[0];

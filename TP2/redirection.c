@@ -12,9 +12,10 @@ void redireccionar(char **argv){
 
 	if(child_pid == 0){
 
-    int fd0,fd1,i,in=0,out=0;
-    char input[64],output[64];
-
+    //int fd0,fd1,i,in=0,out=0;
+    int i,out=0;
+    //char input[64],output[64];
+    char output[64];
 
     for(i=0;argv[i] != NULL;i++)
     {
@@ -49,10 +50,10 @@ void redireccionar(char **argv){
         close(fd0); 
     }*/
 
-    if (out)
+    if(out)
     {
 
-        int fd1 ;
+        int fd1;
         if ((fd1 = creat(output , 0644)) < 0) {
             perror("Couldn't open the output file");
             exit(0);
