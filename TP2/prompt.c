@@ -3,7 +3,7 @@
 
 void prompt(void){//nombreUsuario@nombreMaquina:~$
     char buffer[100]="";
-    //system("echo $USER > /tmp/nombreUsuario.txt");//no se si esta bien usar esto
+    //system("echo $USER > /tmp/nombreUsuario.txt");
     system("whoami > /tmp/nombreUsuario.txt");//crea txt como un archivo temporal
 
     char username[20]="";

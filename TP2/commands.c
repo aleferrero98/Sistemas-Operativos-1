@@ -40,8 +40,7 @@ int separarPalabras(char *linea, char *buffer[]){
         while(token != NULL){
             // Sólo en la primera pasamos la cadena; en las siguientes pasamos NULL
             buffer[i]=token;
-            
-            printf("buffer es %s\n", buffer[i]);
+            //printf("buffer es %s\n", buffer[i]);
             i++;
             token = strtok(NULL, delimitador);
         }
@@ -82,7 +81,7 @@ void echo(char *linea){
         separarPalabras(aux,arg);
         redireccionar(arg);   
     }
-    else{ printf("cagamos%s", linea);}
+    else{ printf("%s", linea);}
 }
 
 void checkEspacios(char *line){
