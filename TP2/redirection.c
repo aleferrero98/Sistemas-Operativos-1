@@ -15,7 +15,6 @@ void redireccionar(char **argv){
     int fd0,fd1,i,in=0,out=0;
     char input[64],output[64];
 
-    // finds where '<' or '>' occurs and make that argv[i] = NULL , to ensure that command wont't read that
 
     for(i=0;argv[i] != NULL;i++)
     {
@@ -30,11 +29,11 @@ void redireccionar(char **argv){
         {      
             argv[i]=NULL;
             strcpy(output,argv[i+1]);
+            printf("output echo: %s",output);
             out=2;
         }         
     }
 
-    //if '<' char was found in string inputted by user
    /* if(in)
     {   
 
@@ -50,7 +49,6 @@ void redireccionar(char **argv){
         close(fd0); 
     }*/
 
-    //if '>' char was found in string inputted by user 
     if (out)
     {
 
@@ -68,11 +66,7 @@ void redireccionar(char **argv){
     perror("execvp");
     _exit(1);
 
-    // otra syntaxis
-    /*      if (!(execvp(*argv, argv) >= 0)) {     // execute the command  
-            printf("*** ERROR: exec failed\n");
-            exit(1);
-     */ 
+     
 	}
 	 else if((child_pid) < 0)
     {     
@@ -80,7 +74,7 @@ void redireccionar(char **argv){
         exit(1);
     }
 
-    else {                                  /* for the parent:      */
+    else {                                 
 
         error=waitpid(child_pid, &child_status, 0);
         if(error==-1) perror("Error al esperar proceso hijo\n");

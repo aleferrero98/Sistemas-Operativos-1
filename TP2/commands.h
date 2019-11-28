@@ -9,5 +9,6 @@ void actuar(char *comando);
 void echo(char *linea);
 void eliminarEspacios(char *linea);
 int separarPalabras(char *linea, char *buffer[]);
+void checkEspacios(char *line);
 
 #endif //_COMMANDS_H_

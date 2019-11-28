@@ -31,10 +31,12 @@ int main(int argc, char *argv[]){
                         if(comandos[i] == '<')
                         {        
                             char *aux;
-                            aux = strstr(comandos, "<") + 2;
+                            aux = strstr(comandos, "<") + 1;
+                            eliminarEspacios(aux);
+                            printf("aux es %s\n",aux);
                        //     printf("aux: %s",aux);            
-                            strcpy(input, aux);
-                            strtok(input, "\n");
+                            strcpy(input,aux);
+                            strtok(input, " ");
                             printf("input:%s\n",input);
                             prog = strtok(comandos,"<");
                             strtok(prog," ");
@@ -48,11 +50,12 @@ int main(int argc, char *argv[]){
                         {      
                             //comandos[i]=NULL;
                             char *aux;
-                            aux = strstr(comandos, ">") + 2;
+                            aux = strstr(comandos, ">") + 1;
+                            eliminarEspacios(aux);
                          //   printf("aux: %s",aux);            
                             strcpy(output, aux);
-                            strtok(output, "\n");
-                            printf("input:%s\n",output);
+                            strtok(output, " ");
+                            printf("output:%s\n",output);
                             prog = strtok(comandos,"<");
                             strtok(prog," ");
                             printf("%s\n",prog);

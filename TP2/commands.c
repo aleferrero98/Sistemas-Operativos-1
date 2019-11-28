@@ -74,12 +74,28 @@ void eliminarEspacios(char *linea){//elimina todos los espacios y tabulaciones q
 }
 void echo(char *linea){
     eliminarEspacios(linea);
-    if(strpbrk(linea,"<>") != NULL){
+    if((strstr(linea,"<") != NULL) || (strstr(linea,">") != NULL)){
         char *arg[10];
+        checkEspacios(linea);
         char aux[256] = "echo ";
         strcat(aux,linea);
         separarPalabras(aux,arg);
         redireccionar(arg);   
     }
-    else printf("%s", linea);
+    else{ printf("cagamos%s", linea);}
+}
+
+void checkEspacios(char *line){
+    for(int i = 0; line[i] != '\n'; i++){
+        if(line[i] == '>'){
+            if((line[i-1] != ' ') ||(line[i+1] != ' ')){
+                char buffer[100] = "";
+                strncat(buffer,line,i);
+                strcat(buffer, " > ");
+                strcat(buffer, strstr(line, ">")+1);
+                printf("buf: %s en i= %d\n",buffer,i);
+                strcpy(line, buffer);
+            }
+        }
+    }
 }
