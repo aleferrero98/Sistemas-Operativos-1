@@ -40,7 +40,7 @@ int separarPalabras(char *linea, char *buffer[]){
         while(token != NULL){
             // Sólo en la primera pasamos la cadena; en las siguientes pasamos NULL
             buffer[i]=token;
-            //printf("buffer es %s\n", buffer[i]);
+            printf("buffer es %s\n", buffer[i]);
             i++;
             token = strtok(NULL, delimitador);
         }

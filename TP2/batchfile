@@ -1,4 +1,6 @@
 cd ..
 echo tres   espacios dos		tab
 clr
+ls > salida.txt
+cat < salida.txt
 quit

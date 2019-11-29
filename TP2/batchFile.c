@@ -15,7 +15,11 @@ void leerBatchfile(char *archivo){//lee archivo desde el path que se le pasa
         char buffer[256];
         fgets(buffer,256,fp);
         prompt();
-        actuar(buffer);
+        if(checkIO(buffer)){
+            printf("el buffer:%s\n",buffer );
+            redir(buffer,1);
+        }
+        else actuar(buffer);
     }
     fclose(fp);
     return;

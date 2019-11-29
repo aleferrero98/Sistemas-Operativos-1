@@ -12,5 +12,6 @@
 
 int isEmpty(char linea[]);
 int checkIO(char linea[]);
+void redir(char *comandos, int entrada);
 
 #endif //_MAIN_H_
