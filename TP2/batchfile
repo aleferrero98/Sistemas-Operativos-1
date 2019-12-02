@@ -1,6 +1,9 @@
 cd ..
 echo tres   espacios dos		tab
+echo  aeeea yo	soy sabalero
 clr
 ls > salida.txt
 cat < salida.txt
-quit
+echo hola > salida2.txt
+echo fin
+

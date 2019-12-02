@@ -11,7 +11,7 @@ void actuar(char *comando){
         aux = strtok(comando," ");//me busca todo lo que sigue al comando
         aux = strtok(NULL," \n");//el proximo caracter puede ser espacio o \n
         if(chdir(aux)) perror("chdri() error"); 
-
+        //printf("\n");
     }else if(strncmp(comando,"clr ",4) == 0){
         clrscr();
     }else if(strncmp(comando,"echo ",5) == 0){
@@ -40,7 +40,7 @@ int separarPalabras(char *linea, char *buffer[]){
         while(token != NULL){
             // Sólo en la primera pasamos la cadena; en las siguientes pasamos NULL
             buffer[i]=token;
-            printf("buffer es %s\n", buffer[i]);
+            //printf("buffer es %s\n", buffer[i]);
             i++;
             token = strtok(NULL, delimitador);
         }
@@ -92,7 +92,7 @@ void checkEspacios(char *line){
                 strncat(buffer,line,i);
                 strcat(buffer, " > ");
                 strcat(buffer, strstr(line, ">")+1);
-                printf("buf: %s en i= %d\n",buffer,i);
+                //printf("buf: %s en i= %d\n",buffer,i);
                 strcpy(line, buffer);
             }
         }

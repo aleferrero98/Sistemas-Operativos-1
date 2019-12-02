@@ -10,27 +10,25 @@ int main(int argc, char *argv[]){
     char comandos[100]="";
     pargv = argv;
     
-    if(argv[1] == NULL){
+    if(argv[1] == NULL){//si ./myshell no tiene argumentos, entonces pide comando de entrada por stdin
         while(1){
             prompt();
             fgets(comandos,100,stdin);
             if(!isEmpty(comandos) && comandos[0]!='\n'){
                 if(checkIO(comandos) && strstr(comandos,"echo") == NULL){
-                    redir(comandos,0);
-                    
+                    redir(comandos,0);  
                 }
-                else actuar(comandos);
+                else actuar(comandos);//comandos sin redireccionamiento o con echo
             }
-            strcpy(comandos, "");
+            strcpy(comandos, "");//limpia el buffer
         }
-    }else{
+    }else{//lee los comandos directamente del archivo batchfile
         char file[256];
         for(int i = 1; i < argc; i++){
             strcat(file,argv[i]);
             if(argv[i+1] != NULL) strcat(file," ");
         }
         leerBatchfile(file);
-        actuar("quit");
     }
 
     return 0;
@@ -56,10 +54,10 @@ void redir(char *comandos, int entrada){
                 eliminarEspacios(aux);
                 strcpy(input,aux);
                 strtok(input, " ");
-                printf("input:%s\n",input);
+               // printf("input:%s\n",input);
                 prog = strtok(comandos,"<");
                 strtok(prog," ");
-                printf("%s\n",prog);
+              //  printf("prog:%s\n",prog);
                 comandos[i]='\0';
                 in=2;           
             }               
@@ -71,33 +69,32 @@ void redir(char *comandos, int entrada){
                 eliminarEspacios(aux);
                 strcpy(output, aux);
                 strtok(output, " ");
-                printf("output:%s\n",output);
+              //  printf("output:%s\n",output);
                 prog = strtok(comandos,"<");
                 strtok(prog," ");
-                printf("%s\n",prog);
+              //  printf("prog:%s\n",prog);
                 comandos[i]='\0';
                 out=2;
                 }         
             }
 
-            //si el char '<' se encontro en string
-            if(in)
+            if(in)//si el char '<' se encontro en string
             {   
                 int fd0;
                 if ((fd0 = open(input, O_RDONLY, 0)) < 0) {
-                perror("No se pudo abrir input file");
-                exit(0);
+                    perror("No se pudo abrir input file");
+                    exit(0);
                 }           
                 dup2(fd0, STDIN_FILENO); 
                 close(fd0); 
             }
 
-            if (out)
+            if (out)//si el char '>' se encontro en string
             {
 
     	        int fd1 ;
  	            if ((fd1 = creat(output , 0644)) < 0) {
-         	       perror("No se pudo abrir output file");
+         	        perror("No se pudo abrir output file");
             	    exit(0);
                 }           
 
@@ -113,16 +110,14 @@ void redir(char *comandos, int entrada){
             else{
 	            execvp(prog,pargv+1);
 	            perror("execvp");
-	           abort();
+	            abort();
             }
         }
         else if((child_pid) < 0)
         {     
             printf("fork() fallo!\n");
             exit(1);
-        }
-
-        else {                                  /* para el padre:      */
+        }else{   /* para el padre:      */
 
 	        error=waitpid(child_pid, &child_status, 0);
     		if(error==-1) perror("Error al esperar proceso hijo\n");
