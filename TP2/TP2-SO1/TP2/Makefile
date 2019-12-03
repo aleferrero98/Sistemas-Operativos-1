@@ -23,4 +23,4 @@ redirection.o: redirection.c
 
 .PHONY: clean
 clean:
-		rm -fv *.o rdproc 
+		rm -fv *.o myshell 

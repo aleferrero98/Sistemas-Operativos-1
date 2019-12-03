@@ -3,7 +3,7 @@
 
 void prompt(void){//nombreUsuario@nombreMaquina:~$
     char buffer[100]="";
-    //system("echo $USER > /tmp/nombreUsuario.txt");//no se si esta bien usar esto
+    //system("echo $USER > /tmp/nombreUsuario.txt");
     system("whoami > /tmp/nombreUsuario.txt");//crea txt como un archivo temporal
 
     char username[20]="";
@@ -17,7 +17,8 @@ void prompt(void){//nombreUsuario@nombreMaquina:~$
     //cwd
     char cwd[256];
     if(getcwd(cwd,sizeof(cwd))==NULL) perror("getcwd() error");
-    strcat(buffer,strstr(cwd,username)+strlen(strtok(username," ")));
+    strcat(buffer,cwd);
+    //strcat(buffer,strstr(cwd,username)+strlen(strtok(username," ")));
     strcat(buffer,"$ ");
     printf("%s", buffer);
 }
