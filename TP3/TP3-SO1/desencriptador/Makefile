@@ -2,7 +2,7 @@
 # kernel build system and can use its language.
 
 ifneq ($(KERNELRELEASE),)
-       obj-m := chardev.o
+       obj-m := desencriptador.o
 
 
 # Otherwise we were called directly from the command
