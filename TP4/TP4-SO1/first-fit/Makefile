@@ -1,5 +1,5 @@
-malloc: main.o malloc.o calloc.o free.o realloc.o 
-		gcc $(CFLAGS) -o malloc main.o malloc.o calloc.o free.o realloc.o
+firstFit: main.o malloc.o calloc.o free.o realloc.o 
+		gcc $(CFLAGS) -o firstFit main.o malloc.o calloc.o free.o realloc.o
 
 main.o: main.c
 		gcc $(CFLAGS) -c main.c
@@ -14,6 +14,8 @@ free.o: free.c
 		gcc $(CFLAGS) -c free.c
 
 realloc.o: realloc.c
-		gcc $(CFLAGS) -c File.c
+		gcc $(CFLAGS) -c realloc.c
 
 .PHONY: clean
+clean:
+		rm -fv *.o firstFit
